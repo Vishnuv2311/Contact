@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/overViewFragment">
+
+    <fragment
+        android:id="@+id/overViewFragment"
+        android:name="com.scbd.contact.overview.OverViewFragment"
+        android:label="OverViewFragment">
+        <action
+            android:id="@+id/action_overViewFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.scbd.contact.details.DetailFragment"
+        android:label="DetailFragment">
+        <argument
+            android:name="contactDetails"
+            app:argType="com.scbd.contact.datas.Contact" />
+    </fragment>
+</navigation>

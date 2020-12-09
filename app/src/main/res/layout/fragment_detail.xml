@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.scbd.contact.details.DetailViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".details.DetailFragment">
+
+        <ImageView
+            android:id="@+id/contact_img"
+            android:layout_width="150dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            app:layout_constraintDimensionRatio="h,1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/backgrounds/scenic" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/nameField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Name"
+            android:padding="5dp"
+            app:layout_constraintTop_toBottomOf="@id/contact_img">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.contact.name}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/numberField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Number"
+            android:padding="5dp"
+            app:layout_constraintTop_toBottomOf="@id/nameField">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.contact.phoneNo}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
