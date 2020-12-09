@@ -20,6 +20,7 @@
             android:layout_width="150dp"
             android:layout_height="0dp"
             android:scaleType="fitXY"
+            app:image="@{viewModel.contact.img}"
             app:layout_constraintDimensionRatio="h,1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -19,9 +19,9 @@
             android:id="@+id/contact_list_image"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@drawable/cirecle_1"
             android:padding="2dp"
             android:scaleType="fitXY"
+            app:image="@{contact.img}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/backgrounds/scenic" />

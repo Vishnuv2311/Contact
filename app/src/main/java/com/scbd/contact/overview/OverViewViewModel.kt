@@ -2,6 +2,7 @@ package com.scbd.contact.overview
 
 import android.app.Application
 import android.content.ContentResolver
+import android.content.ContentUris
 import android.provider.ContactsContract
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -43,6 +44,18 @@ class OverViewViewModel(val app: Application) : ViewModel() {
                         ContactsContract.Contacts.DISPLAY_NAME
                     )
                 )
+                val photoCur = cr.query(
+                    ContactsContract.Data.CONTENT_URI,
+                    null,
+                    ContactsContract.Data.CONTACT_ID + "=" + id + " AND "
+                            + ContactsContract.Data.MIMETYPE + "='"
+                            + ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE + "'",
+                    null,
+                    null
+                )
+                val photo =
+                    ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, id.toLong())
+
                 if (cur.getInt(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
                     val pCur = cr.query(
                         ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -51,6 +64,7 @@ class OverViewViewModel(val app: Application) : ViewModel() {
                         arrayOf(id),
                         null
                     )
+
                     if (pCur != null) {
                         while (pCur.moveToNext()) {
                             val phoneNo = pCur.getString(
@@ -58,7 +72,8 @@ class OverViewViewModel(val app: Application) : ViewModel() {
                                     ContactsContract.CommonDataKinds.Phone.NUMBER
                                 )
                             )
-                            contactList.add(Contact(name, phoneNo))
+
+                            contactList.add(Contact(name, phoneNo, photo))
                         }
                         pCur.close()
                     }
