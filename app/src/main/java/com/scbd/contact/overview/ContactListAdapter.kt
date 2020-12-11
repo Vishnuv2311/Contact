@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.scbd.contact.databinding.ContcatItemBinding
-import com.scbd.contact.datas.Contact
+import com.scbd.contact.database.Contact
 
 class ContactListAdapter(private val onClickListener: OnClickListener) :
     RecyclerView.Adapter<ContactListAdapter.ViewHolder>() {
 
-    var contactList = arrayListOf<Contact>()
+    var contactList = listOf<Contact>()
         set(value) {
             field = value
             notifyDataSetChanged()

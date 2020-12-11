@@ -4,85 +4,34 @@ import android.app.Application
 import android.content.ContentResolver
 import android.content.ContentUris
 import android.provider.ContactsContract
+import android.text.BoringLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.scbd.contact.datas.Contact
+import com.scbd.contact.database.Contact
+import com.scbd.contact.database.ContactDao
+import kotlinx.coroutines.*
 
 
-class OverViewViewModel(val app: Application) : ViewModel() {
-
-    private val _contactList = MutableLiveData<ArrayList<Contact>>()
-
-    val contactList: LiveData<ArrayList<Contact>>
-        get() = _contactList
+class OverViewViewModel(val app: Application, val database: ContactDao) : ViewModel() {
 
     private val _navigateToSelectedContact = MutableLiveData<Contact>()
-
     val navigateToSelectedContact: LiveData<Contact>
         get() = _navigateToSelectedContact
 
+    private val _navigateToAddContact = MutableLiveData<Boolean>()
+    val navigateToAddContact: LiveData<Boolean>
+        get() = _navigateToAddContact
 
-    init {
-        fetchContacts()
-    }
+    private val _status = MutableLiveData<Boolean>()
+    val status: LiveData<Boolean>
+        get() = _status
 
-    private fun fetchContacts() {
-        val contactList = arrayListOf<Contact>()
-        val cr: ContentResolver = app.contentResolver
-        val cur = cr.query(
-            ContactsContract.Contacts.CONTENT_URI,
-            null, null, null, null
-        )
-        if (cur?.count ?: 0 > 0) {
-            while (cur!!.moveToNext()) {
-                val id = cur.getString(
-                    cur.getColumnIndex(ContactsContract.Contacts._ID)
-                )
-                val name = cur.getString(
-                    cur.getColumnIndex(
-                        ContactsContract.Contacts.DISPLAY_NAME
-                    )
-                )
-                val photoCur = cr.query(
-                    ContactsContract.Data.CONTENT_URI,
-                    null,
-                    ContactsContract.Data.CONTACT_ID + "=" + id + " AND "
-                            + ContactsContract.Data.MIMETYPE + "='"
-                            + ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE + "'",
-                    null,
-                    null
-                )
-                val photo =
-                    ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, id.toLong())
 
-                if (cur.getInt(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
-                    val pCur = cr.query(
-                        ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                        null,
-                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                        arrayOf(id),
-                        null
-                    )
+    private val viewModelJob = Job()
+    private val uiScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-                    if (pCur != null) {
-                        while (pCur.moveToNext()) {
-                            val phoneNo = pCur.getString(
-                                pCur.getColumnIndex(
-                                    ContactsContract.CommonDataKinds.Phone.NUMBER
-                                )
-                            )
-
-                            contactList.add(Contact(name, phoneNo, photo))
-                        }
-                        pCur.close()
-                    }
-                }
-            }
-        }
-        cur?.close()
-        _contactList.value = contactList
-    }
+    val contacts = database.getAllContact()
 
     fun displayContactDetails(contact: Contact) {
         _navigateToSelectedContact.value = contact
@@ -91,4 +40,22 @@ class OverViewViewModel(val app: Application) : ViewModel() {
     fun displayUserDetailsComplete() {
         _navigateToSelectedContact.value = null
     }
+
+    fun displayAddContact() {
+        _navigateToAddContact.value = true
+    }
+
+    fun navigationComplete() {
+        _navigateToAddContact.value = null
+        _navigateToSelectedContact.value = null
+    }
+
+    fun showTextMessage(status: Boolean) {
+        _status.value = status
+    }
+
+    fun navigateToDetails(contact: Contact) {
+        _navigateToSelectedContact.value = contact
+    }
+
 }

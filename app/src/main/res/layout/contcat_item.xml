@@ -7,7 +7,7 @@
 
         <variable
             name="contact"
-            type="com.scbd.contact.datas.Contact" />
+            type="com.scbd.contact.database.Contact" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,16 +15,24 @@
         android:layout_height="wrap_content"
         android:padding="2dp">
 
-        <ImageView
-            android:id="@+id/contact_list_image"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/contact_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="0dp"
             android:padding="2dp"
-            android:scaleType="fitXY"
-            app:image="@{contact.img}"
+            app:cardCornerRadius="30dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/backgrounds/scenic" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.scbd.contact.utils.ImageTextView
+                android:id="@+id/contact_list_image"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                app:first_letter="\?"
+                app:image="@{contact.img}"
+                app:name="@{contact.name}" />
+        </androidx.cardview.widget.CardView>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -34,7 +42,7 @@
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/contact_list_image"
+            app:layout_constraintStart_toEndOf="@+id/contact_card"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView

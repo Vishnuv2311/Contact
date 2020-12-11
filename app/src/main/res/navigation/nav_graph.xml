@@ -18,6 +18,9 @@
         android:label="DetailFragment">
         <argument
             android:name="contactDetails"
-            app:argType="com.scbd.contact.datas.Contact" />
+            app:argType="com.scbd.contact.database.Contact" />
+        <action
+            android:id="@+id/action_detailFragment_to_overViewFragment"
+            app:destination="@id/overViewFragment" />
     </fragment>
 </navigation>

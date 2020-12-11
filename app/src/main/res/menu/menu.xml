@@ -8,4 +8,10 @@
         android:icon="@drawable/ic_save"
         android:title="Save"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/update"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_update_24"
+        android:title="Update"
+        app:showAsAction="always" />
 </menu>
